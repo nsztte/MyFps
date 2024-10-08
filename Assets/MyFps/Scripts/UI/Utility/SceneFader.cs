@@ -17,11 +17,15 @@ namespace MyFps
 
         private void Start()
         {
-            //씬 시작시 페이드인 효과
-            StartCoroutine(FadeIn());
+            //초기화: 시작시 화면을 검정색으로 시작
+            image.color = new Color(0f, 0f, 0f, 1f);
+            FromFade(1f);
+        }
 
-            //씬 시작시 페이드아웃 효과
-            //StartCoroutine(FadeOut());
+        public void FromFade(float delayTime = 0f)  //딜레이 없을 때는 디폴트값(0f)이 적용됨
+        {
+            //씬 시작시 페이드인 효과
+            StartCoroutine(FadeIn(delayTime));
         }
 
         public void FadeTo(string sceneName)
@@ -29,8 +33,13 @@ namespace MyFps
             StartCoroutine(FadeOut(sceneName));
         }
 
-        IEnumerator FadeIn()
+        IEnumerator FadeIn(float delayTime)
         {
+            if(delayTime > 0f)
+            {
+                yield return new WaitForSeconds(delayTime);
+            }
+
             //1초 동안 이미지 알파값 1에서 0
             float t = 1;
 

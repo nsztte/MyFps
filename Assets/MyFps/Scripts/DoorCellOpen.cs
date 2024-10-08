@@ -12,6 +12,7 @@ namespace MyFps
         public GameObject actionUI;
         public TextMeshProUGUI actionText;
         [SerializeField] private string action = "Open The Door";
+        public GameObject extraCross;
 
         //action
         private Animator animator;
@@ -37,10 +38,9 @@ namespace MyFps
             //거리가 2이하일 때 UI 활성화
             if (theDistance <= 2f)
             {
-                actionUI.SetActive(true);
-                actionText.text = action;
+                ShowActionUI();
 
-                if(Input.GetButtonDown("Action"))
+                if (Input.GetButtonDown("Action"))
                 {
                     HideActionUI();
 
@@ -62,11 +62,19 @@ namespace MyFps
             HideActionUI();
         }
 
+        //UI 활성화
+        void ShowActionUI()
+        {
+            actionUI.SetActive(true);
+            actionText.text = action;
+            extraCross.SetActive(true);
+        }
         //UI 비활성화
         void HideActionUI()
         {
             actionUI.SetActive(false);
             actionText.text = "";
+            extraCross.SetActive(false);
         }
     }
 }
