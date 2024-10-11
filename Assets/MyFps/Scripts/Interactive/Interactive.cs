@@ -3,37 +3,27 @@ using UnityEngine;
 
 namespace MyFps
 {
-    public class DoorCellOpen : MonoBehaviour
+    //인터렉티브 액션 구현하는 클래스
+    public abstract class Interactive : MonoBehaviour
     {
+        protected abstract void DoAction();
+
         #region Variables
         private float theDistance;
 
         //action UI
         public GameObject actionUI;
         public TextMeshProUGUI actionText;
-        [SerializeField] private string action = "Open The Door";
+        [SerializeField] private string action = "Action Text";
         public GameObject extraCross;
-
-        //action
-        private Animator animator;
-        private BoxCollider boxCollider;
-        public AudioSource audioSource;
         #endregion
 
-        private void Start()
-        {
-            animator = GetComponent<Animator>();
-            boxCollider = GetComponent<BoxCollider>();
-        }
-
-        private void Update()
+        protected void Update()
         {
             theDistance = PlayerCasting.distanceFromTarget;
         }
 
-
-        //마우스를 가져가면 액션 UI를 보여준다
-        private void OnMouseOver()
+        protected void OnMouseOver()
         {
             //거리가 2이하일 때 UI 활성화
             if (theDistance <= 2f)
@@ -44,10 +34,8 @@ namespace MyFps
                 {
                     HideActionUI();
 
-                    //문이 열린다
-                    animator.SetBool("IsOpen", true);
-                    boxCollider.enabled = false;
-                    audioSource.Play();
+                    //실행
+                    DoAction();
                 }
             }
             else
@@ -63,14 +51,14 @@ namespace MyFps
         }
 
         //UI 활성화
-        void ShowActionUI()
+        protected void ShowActionUI()
         {
             actionUI.SetActive(true);
             actionText.text = action;
             extraCross.SetActive(true);
         }
         //UI 비활성화
-        void HideActionUI()
+        protected void HideActionUI()
         {
             actionUI.SetActive(false);
             actionText.text = "";
